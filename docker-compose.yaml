@@ -1,0 +1,12 @@
+version: "3.8"
+services:
+
+services:
+  ratcatcher:
+    build:
+      context: .
+    image: ratcatcher
+    volumes:
+    - ../envoy:/src/workspace/envoy
+    working_dir: /src/workspace/envoy
+    command: ./docs/build.sh

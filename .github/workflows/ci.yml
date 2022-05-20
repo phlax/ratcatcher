@@ -22,8 +22,10 @@ jobs:
     - name: Checkout Envoy repo
       run: |
         cd ..
-        git clone https://github.com/envoyproxy/envoy
+        git clone https://github.com/phlax/envoy
+        cd envoy
+        git checkout deps-bad-dependabot
     - name: Test ${{ matrix.os_tag }}
       run: |
         docker-compose build --build-arg OS_TAG=${{ matrix.os_tag }} ratcatcher
-        docker-compose run ratcatcher || echo "Failed, as hoped!"
+        docker-compose run ratcatcher

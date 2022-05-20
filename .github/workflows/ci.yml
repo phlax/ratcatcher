@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+    branches:
+    - main
+  pull_request:
+    branches:
+    - main
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        os_tag:
+        - unstable-slim
+        - testing-slim
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v3
+    - name: Checkout Envoy repo
+      run: |
+        cd ..
+        git clone https://github.com/envoyproxy/envoy
+    - name: Test ${{ matrix.os_tag }}
+      run: |
+        docker-compose build --build-arg OS_TAG=${{ matrix.os_tag }} ratcatcher
+        docker-compose run ratcatcher || echo "Failed, as hoped!"
